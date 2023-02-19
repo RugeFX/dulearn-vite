@@ -2,14 +2,12 @@ import logo from "/src/img/logoglow.png";
 import bg from "/src/img/login-bg.png";
 import { FaUser, FaLock, FaCircleNotch } from "react-icons/fa";
 import { useContext, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import axiosClient from "../apiClient";
 
 import "../assets/css/shake.css";
 import AuthContext from "../contexts/AuthContext";
 
-export default function Login(props) {
+export default function Login() {
   const { login } = useContext(AuthContext);
 
   const [nisn, setNisn] = useState("");
@@ -30,7 +28,7 @@ export default function Login(props) {
       setLoading(false);
       const errResponse = err.response.data;
       setError(errResponse.data);
-      console.error(errResponse);
+      console.error(error);
     }
   };
 
@@ -148,6 +146,7 @@ export default function Login(props) {
             )}
           </div>
           <button
+            type="button"
             onClick={handleLogin}
             className={`flex items-center gap-4 text-lg font-bold text-[#1c215c] bg-[#FAA41A] hover:bg-[#ffb949] rounded-lg px-5 py-2 focus:outline-0 focus:shadow-input focus:shadow-white transition-all hover:scale-110`}
           >

@@ -1,12 +1,16 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./Components/Navbar";
+
+// Pages Import
 import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MateriSementara from "./pages/MateriSementara";
+
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import Materials from "./pages/Materials";
 
 export default function App() {
   return (
@@ -44,6 +48,22 @@ export default function App() {
             element={
               <ProtectedRoute accessBy="authenticated">
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/material"
+            element={
+              <ProtectedRoute accessBy="authenticated">
+                <MateriSementara />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/materials"
+            element={
+              <ProtectedRoute accessBy="authenticated">
+                <Materials />
               </ProtectedRoute>
             }
           />

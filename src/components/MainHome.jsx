@@ -4,11 +4,13 @@ import MaterialBox from "./MaterialBox";
 import { FaSearch } from "react-icons/fa";
 import subjectbox from "/src/img/subjectbox.png";
 import axiosClient from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 const { useEffect, useState } = React;
 
 const MainHome = (props) => {
   const [materials, setMaterials] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosClient
@@ -86,7 +88,7 @@ const MainHome = (props) => {
             title={mat.title}
             subject={mat.subject.subject}
             onClick={() => {
-              window.location.href = "/materi";
+              navigate("/material");
             }}
           >
             {mat.material}
@@ -97,7 +99,7 @@ const MainHome = (props) => {
           title="Cara membuat CSS Input"
           subject="PWPB"
           onClick={() => {
-            window.location.href = "/materi";
+            navigate("/material");
           }}
         >
           Cara membuat CSS Input
@@ -107,7 +109,7 @@ const MainHome = (props) => {
           title="Membuat sistem post di Laravel dan React Native"
           subject="PWPB"
           onClick={() => {
-            window.location.href = "/materi";
+            navigate("/material");
           }}
         >
           Membuat sistem post di Laravel dan React Native
@@ -117,7 +119,7 @@ const MainHome = (props) => {
           title="Instalasi NetBeans 8.2 dengan JDK 1.8"
           subject="PBO"
           onClick={() => {
-            window.location.href = "/materi";
+            navigate("/material");
           }}
         >
           Instalasi NetBeans 8.2 dengan JDK 1.8
