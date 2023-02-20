@@ -1,13 +1,23 @@
-import React, { useState } from "react";
-import Navbar from "../Components/Navbar";
-import Sidebar from "../Components/Sidebar";
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import { useParams } from "react-router-dom";
+import axiosClient from "../apiClient";
 
 const MateriSementara = () => {
   const [diskusi, setDiskusi] = useState(false);
+  const [post, setPost] = useState({});
+  const { postId } = useParams();
 
   const handleDiskusi = () => {
     setDiskusi(!diskusi);
   };
+
+  useEffect(() => {
+    axiosClient.get(`/api/materials/${postId}`).then((mat) => {
+      setPost(mat.data.data);
+    });
+  }, []);
 
   return (
     <>
@@ -29,7 +39,8 @@ const MateriSementara = () => {
         <div className="h-full mx-10 px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
           <div className="mb-3">
             <span className="text-3xl text-white font-bold">
-              Membuat Desain dengan Addobe Ilustrator
+              {/* Membuat Desain dengan Addobe Ilustrator */}
+              {post.title}
             </span>
             <span className="pl-3 text-[#FAA41A] text-setMaterials">DDG</span>
           </div>

@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../Components/Navbar";
-import MainHome from "../Components/MainHome";
+import Navbar from "../components/Navbar";
+import MainHome from "../components/MainHome";
 
 export default function Home(props) {
   return (

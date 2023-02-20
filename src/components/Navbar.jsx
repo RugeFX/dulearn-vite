@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { FaPowerOff } from "react-icons/fa";
 import logo from "/src/img/logo.png";
 import defpp from "/src/img/profile/default.png";
-import axiosClient from "../apiClient";
 import AuthContext from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function useOutsideAlerter(ref, set) {
   useEffect(() => {
@@ -26,6 +26,7 @@ const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [toggleUser, setToggleUser] = useState(false);
   const wrapperRef = useRef(null);
+  const navigate = useNavigate();
   useOutsideAlerter(wrapperRef, setToggleUser);
 
   return (
@@ -36,9 +37,9 @@ const Navbar = () => {
           !toggleUser && `hidden`
         }`}
       >
-        <a
-          href="/profile"
-          className="grid grid-flow-col items-center rounded-t-lg hover:bg-slate-300 p-3"
+        <div
+          onClick={() => navigate("/profile")}
+          className="grid grid-flow-col items-center rounded-t-lg hover:bg-slate-300 p-3 cursor-pointer"
         >
           <img src={defpp} alt="User" />
           <div>
@@ -49,7 +50,7 @@ const Navbar = () => {
               {Object.keys(user).length !== 0 && user.level.level}
             </p>
           </div>
-        </a>
+        </div>
         <button
           onClick={() => {
             logout();
@@ -65,7 +66,7 @@ const Navbar = () => {
           className="cursor-pointer"
           src={logo}
           onClick={() => {
-            window.location.href = "/home";
+            navigate("/home");
           }}
         ></img>
       </div>

@@ -52,7 +52,7 @@ export default function App() {
             }
           />
           <Route
-            path="/material"
+            path="/material/:postId"
             element={
               <ProtectedRoute accessBy="authenticated">
                 <MateriSementara />
