@@ -37,17 +37,22 @@ const MateriSementara = () => {
           <h1 className="text-2xl font-bold text-white">Diskusi</h1>
         </div>
         <div className="h-full mx-10 px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
-          <div className="mb-3">
-            <span className="text-3xl text-white font-bold">
-              {/* Membuat Desain dengan Addobe Ilustrator */}
-              {post.title}
-            </span>
-            <span className="pl-3 text-[#FAA41A] text-setMaterials">DDG</span>
-          </div>
-          <p className="text-lg text-white">
-            Pembuatan desain pada matapelajaran DDG ini kita berkenalan dengan
-            Addobe Ilustrator yang menjadi dasar dalam pembuatan desain digital
-          </p>
+          {Object.keys(post).length > 0 ? (
+            <>
+              <div className="mb-3">
+                <span className="text-3xl text-white font-bold">
+                  {/* Membuat Desain dengan Addobe Ilustrator */}
+                  {post.title}
+                </span>
+                <span className="pl-3 text-[#FAA41A] text-setMaterials">
+                  {post.subject.subject}
+                </span>
+              </div>
+              <p className="text-lg text-white">{post.material}</p>
+            </>
+          ) : (
+            <h1>Loading</h1>
+          )}
         </div>
       </main>
     </>

@@ -82,48 +82,22 @@ const MainHome = (props) => {
       </div>
       <h1 className="text-3xl text-white font-bold">Materi Terbaru</h1>
       <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
-        {materials.map((mat) => (
-          <MaterialBox
-            key={mat.id}
-            title={mat.title}
-            subject={mat.subject.subject}
-            onClick={() => {
-              navigate(`/material/${mat.id}`);
-            }}
-          >
-            {mat.material}
-          </MaterialBox>
-        ))}
-        <MaterialBox
-          key="asd"
-          title="Cara membuat CSS Input"
-          subject="PWPB"
-          onClick={() => {
-            navigate("/material");
-          }}
-        >
-          Cara membuat CSS Input
-        </MaterialBox>
-        <MaterialBox
-          key="dsa"
-          title="Membuat sistem post di Laravel dan React Native"
-          subject="PWPB"
-          onClick={() => {
-            navigate("/material");
-          }}
-        >
-          Membuat sistem post di Laravel dan React Native
-        </MaterialBox>
-        <MaterialBox
-          key="das"
-          title="Instalasi NetBeans 8.2 dengan JDK 1.8"
-          subject="PBO"
-          onClick={() => {
-            navigate("/material");
-          }}
-        >
-          Instalasi NetBeans 8.2 dengan JDK 1.8
-        </MaterialBox>
+        {materials.length > 0 ? (
+          materials.map((mat) => (
+            <MaterialBox
+              key={mat.id}
+              title={mat.title}
+              subject={mat.subject.subject}
+              onClick={() => {
+                navigate(`/material/${mat.id}`);
+              }}
+            >
+              {mat.material}
+            </MaterialBox>
+          ))
+        ) : (
+          <MaterialBoxSkeleton />
+        )}
       </div>
     </main>
   );
