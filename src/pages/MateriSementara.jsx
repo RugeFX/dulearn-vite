@@ -15,6 +15,7 @@ const MateriSementara = () => {
 
   useEffect(() => {
     axiosClient.get(`/api/materials/${postId}`).then((mat) => {
+      document.title = `${mat.data.data.title} - DuLearn`;
       setPost(mat.data.data);
     });
   }, []);
@@ -41,7 +42,6 @@ const MateriSementara = () => {
             <>
               <div className="mb-3">
                 <span className="text-3xl text-white font-bold">
-                  {/* Membuat Desain dengan Addobe Ilustrator */}
                   {post.title}
                 </span>
                 <span className="pl-3 text-[#FAA41A] text-setMaterials">

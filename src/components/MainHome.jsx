@@ -1,10 +1,11 @@
 import React from "react";
-import axios from "axios";
 import MaterialBox from "./MaterialBox";
 import { FaSearch } from "react-icons/fa";
 import subjectbox from "/src/img/subjectbox.png";
 import axiosClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
+import MaterialBoxSkeleton from "./MaterialBoxSkeleton";
+import { motion } from "framer-motion";
 
 const { useEffect, useState } = React;
 
@@ -24,7 +25,7 @@ const MainHome = (props) => {
       });
   }, []);
   return (
-    <main className="h-screen bg-[#070B30] mt-20 pt-5 px-5">
+    <main className="h-full bg-[#070B30] mt-20 pt-5 px-5">
       <div className="grid grid-cols-2 h-52 mb-5 gap-5">
         <div className="h-full p-5 bg-[#42489E] rounded-lg grid place-content-center">
           <h1 className="text-3xl text-white font-bold text-center">
@@ -80,24 +81,36 @@ const MainHome = (props) => {
           </div>
         </div>
       </div>
-      <h1 className="text-3xl text-white font-bold">Materi Terbaru</h1>
-      <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
+      <div className="grid grid-flow-row gap-3 pb-5">
+        <h1 className="text-3xl text-white font-bold">Materi Terbaru</h1>
         {materials.length > 0 ? (
-          materials.map((mat) => (
-            <MaterialBox
-              key={mat.id}
-              title={mat.title}
-              subject={mat.subject.subject}
-              onClick={() => {
-                navigate(`/material/${mat.id}`);
-              }}
-            >
-              {mat.material}
-            </MaterialBox>
-          ))
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
+            {materials.map((mat) => (
+              <MaterialBox
+                key={mat.id}
+                title={mat.title}
+                subject={mat.subject.subject}
+                onClick={() => {
+                  navigate(`/material/${mat.id}`);
+                }}
+              >
+                {mat.material}
+              </MaterialBox>
+            ))}
+          </div>
         ) : (
-          <MaterialBoxSkeleton />
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-hidden">
+            <MaterialBoxSkeleton pulse={true} amount={10} />
+          </div>
         )}
+        <h1 className="text-3xl text-white font-bold">Materi A</h1>
+        <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
+          <MaterialBoxSkeleton amount={10} />
+        </div>
+        <h1 className="text-3xl text-white font-bold">Materi B</h1>
+        <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
+          <MaterialBoxSkeleton amount={10} />
+        </div>
       </div>
     </main>
   );
