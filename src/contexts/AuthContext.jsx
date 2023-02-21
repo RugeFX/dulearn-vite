@@ -7,10 +7,11 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     let userProfle = localStorage.getItem("userProfile");
-    if (userProfle) {
-      return JSON.parse(userProfle);
+    if (!userProfle) {
+      axiosClient.get("/api/auth/web/logout");
+      return null;
     }
-    return null;
+    return JSON.parse(userProfle);
   });
 
   const navigate = useNavigate();

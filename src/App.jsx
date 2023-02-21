@@ -7,10 +7,12 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MateriSementara from "./pages/MateriSementara";
+import User from "./pages/Profile";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import Materials from "./pages/Materials";
+import Editor from "./pages/Editor";
 
 export default function App() {
   return (
@@ -64,6 +66,22 @@ export default function App() {
             element={
               <ProtectedRoute accessBy="authenticated">
                 <Materials />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute accessBy="authenticated">
+                <User />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editor"
+            element={
+              <ProtectedRoute accessBy="authenticated">
+                <Editor />
               </ProtectedRoute>
             }
           />

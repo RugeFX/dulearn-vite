@@ -19,6 +19,7 @@ axiosClient.interceptors.response.use(
   function (error) {
     let res = error.response;
     if (res.status == 401) {
+      localStorage.removeItem("userProfile");
       window.location.href = "/login";
     }
     console.error("Looks like there was a problem. Status Code: " + res.status);

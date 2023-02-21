@@ -88,7 +88,7 @@ const MainHome = (props) => {
             title={mat.title}
             subject={mat.subject.subject}
             onClick={() => {
-              navigate("/material");
+              navigate(`/material/${mat.id}`);
             }}
           >
             {mat.material}

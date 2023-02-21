@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uiw/react-md-editor": "^3.20.5",
     "axios": "^1.2.5",
     "dotenv": "^16.0.3",
     "firebase": "^9.16.0",

@@ -6,9 +6,12 @@ import { motion } from "framer-motion";
 
 import "../assets/css/shake.css";
 import AuthContext from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const [nisn, setNisn] = useState("");
   const [password, setPassword] = useState("");
@@ -157,7 +160,10 @@ export default function Login() {
           </button>
           <span className="text-white">
             Tidak punya akun?{" "}
-            <a href="/register" className="text-[#FAA41A] font-bold">
+            <a
+              onClick={() => navigate("/register")}
+              className="text-[#FAA41A] font-bold cursor-pointer"
+            >
               Buat akun disini!
             </a>
           </span>

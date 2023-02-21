@@ -382,7 +382,10 @@ export default function Register(props) {
           </button>
           <span className="text-white">
             Sudah memiliki akun?{" "}
-            <a href="/login" className="text-[#FAA41A] font-bold">
+            <a
+              onClick={() => navigate("/login")}
+              className="text-[#FAA41A] font-bold cursor-pointer"
+            >
               Masuk disini!
             </a>
           </span>
