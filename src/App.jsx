@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import MateriSementara from "./pages/MateriSementara";
+import MateriSementara from "./pages/Material";
 import User from "./pages/Profile";
 
 import { AuthContextProvider } from "./contexts/AuthContext";

@@ -60,11 +60,13 @@ export default function Login() {
                 type="text"
                 name="nisn"
                 id="nisn"
-                className={`w-full px-3 pt-5 pb-2 border-l-2 bg-[#464A83] rounded-r-lg text-white outline-none ${
+                className={`w-full px-3 pt-5 pb-2 border-l-2 bg-[#464A83] rounded-r-lg ${
                   error.reg_num != null || error.all != null
                     ? "text-red-600"
-                    : ""
-                } ${!focusNisn && "pb-3.5 pt-3.5"} transition-all`}
+                    : "text-white"
+                } outline-none  ${
+                  !focusNisn && "pb-3.5 pt-3.5"
+                } transition-all`}
                 onFocus={(e) => {
                   setFocusNisn(true);
                   e.target.parentElement.style.scale = "105%";
@@ -99,9 +101,10 @@ export default function Login() {
                 type="password"
                 name="pass"
                 id="pass"
-                className={`w-full px-3 pt-5 pb-2 border-l-2 bg-[#464A83] rounded-r-lg text-white outline-none ${
-                  (error.password != null || error.all != null) &&
-                  "text-red-600"
+                className={`w-full px-3 pt-5 pb-2 border-l-2 bg-[#464A83] rounded-r-lg outline-none ${
+                  error.password != null || error.all != null
+                    ? "text-red-600"
+                    : "text-white"
                 } ${!focusPass && "pb-3.5 pt-3.5"} transition-all`}
                 onFocus={(e) => {
                   setFocusPass(true);

@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialBox from "./MaterialBox";
-import { FaSearch } from "react-icons/fa";
+import { FaArrowRight, FaSearch } from "react-icons/fa";
 import subjectbox from "/src/img/subjectbox.png";
 import axiosClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +82,17 @@ const MainHome = (props) => {
         </div>
       </div>
       <div className="grid grid-flow-row gap-3 pb-5">
-        <h1 className="text-3xl text-white font-bold">Materi Terbaru</h1>
+        <div className="text-white flex gap-5 items-end">
+          <h1 className="text-3xl text-white font-bold">Materi Terbaru</h1>
+          <motion.button
+            transition={{ type: "spring", bounce: 0.6 }}
+            whileHover={{ x: 10 }}
+            onClick={() => navigate("/materials")}
+            className="bg-[#42489E] px-2 flex justify-center items-center gap-2 rounded-lg"
+          >
+            See All <FaArrowRight color="white" />
+          </motion.button>
+        </div>
         {materials.length > 0 ? (
           <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
             {materials.map((mat) => (

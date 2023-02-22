@@ -6,7 +6,7 @@ const MaterialBox = ({ title, subject, onClick, children }) => {
   return (
     <motion.div
       transition={{
-        y: { ease: "easeIn", duration: 0.1 },
+        y: { type: "spring", bounce: 0.5, duration: 0.5 },
         opacity: { ease: "easeIn", duration: 0.5 },
         scale: { ease: "linear", duration: 0.1 },
       }}
@@ -25,7 +25,7 @@ const MaterialBox = ({ title, subject, onClick, children }) => {
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}
-      className={`p-5 h-[206px] w-[449px] cursor-pointer transition-all hover:brightness-125`}
+      className={`p-5 h-[206px] w-[449px] cursor-pointer hover:brightness-125`}
     >
       <span className="text-white text-xl font-bold">{title}</span>
       <span className="pl-3 text-[#FAA41A] text-sm">{subject}</span>

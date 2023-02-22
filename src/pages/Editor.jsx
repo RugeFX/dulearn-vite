@@ -4,6 +4,7 @@ import axiosClient from "../apiClient";
 import AuthContext from "../contexts/AuthContext";
 import MainContainer from "../components/MainContainer";
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 const subjectOptions = [
   {
@@ -44,6 +45,7 @@ export default function Editor() {
   return (
     <>
       <Navbar />
+      <Sidebar chosenTab={3} />
       <MainContainer>
         <div className="flex gap-2 mb-2">
           <input
