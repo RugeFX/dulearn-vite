@@ -26,7 +26,7 @@ const sidebarItems = [
     label: "Profile",
   },
   {
-    navigateTo: "/collection",
+    navigateTo: "/koleksi",
     icon: <FaBookmark />,
     label: "Koleksi",
   },

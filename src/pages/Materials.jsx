@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
-  FaBookmark,
-  FaChartBar,
+  FaAngleRight,
   FaComment,
-  FaCommentAlt,
-  FaLock,
   FaRegBookmark,
   FaSearch,
 } from "react-icons/fa";
@@ -75,8 +72,7 @@ const Materials = () => {
             <div className="w-full grid grid-flow-row gap-5">
               {materials.length > 0 ? (
                 materials.map((mat) => (
-                  <motion.button
-                    onClick={() => navigate(`/material/${mat.id}`)}
+                  <motion.div
                     transition={{ type: "spring", bounce: 0.5, duration: 0.5 }}
                     initial={{ x: -10, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
@@ -87,16 +83,30 @@ const Materials = () => {
                     <h2 className="font-bold text-white text-3xl">
                       {mat.title}
                     </h2>
-                    <p className="text-white">{mat.material}</p>
-                    <div className="flex w-full justify-start gap-3">
-                      <button className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all">
-                        <FaRegBookmark />
-                      </button>
-                      <button className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3">
-                        <FaComment /> Diskusi
-                      </button>
+                    <p className="text-white text-left">{mat.material}</p>
+                    <div className="grid grid-flow-col w-full">
+                      <div className="flex w-full justify-start gap-3">
+                        <button
+                          onClick={() => console.log("Pressed Bookmark")}
+                          className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
+                        >
+                          <FaRegBookmark />
+                        </button>
+                        <button className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3">
+                          <FaComment /> Diskusi
+                        </button>
+                      </div>
+                      <div className="flex w-full justify-end gap-3">
+                        <button
+                          onClick={() => navigate(`/material/${mat.id}`)}
+                          className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3"
+                        >
+                          Read More
+                          <FaAngleRight />
+                        </button>
+                      </div>
                     </div>
-                  </motion.button>
+                  </motion.div>
                 ))
               ) : (
                 <>

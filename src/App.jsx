@@ -8,11 +8,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MateriSementara from "./pages/Material";
 import User from "./pages/Profile";
+import Materials from "./pages/Materials";
+import Editor from "./pages/Editor";
+import Koleksi from "./pages/Koleksi";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
-import Materials from "./pages/Materials";
-import Editor from "./pages/Editor";
 
 export default function App() {
   return (
@@ -82,6 +83,14 @@ export default function App() {
             element={
               <ProtectedRoute accessBy="authenticated">
                 <Editor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/koleksi"
+            element={
+              <ProtectedRoute accessBy="authenticated">
+                <Koleksi />
               </ProtectedRoute>
             }
           />

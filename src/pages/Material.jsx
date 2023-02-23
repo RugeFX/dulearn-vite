@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
 import { useParams } from "react-router-dom";
 import axiosClient from "../apiClient";
-import ph from "/src/img/inmatph.png";
-import { motion, AnimatePresence } from "framer-motion";
-import MaterialBoxSkeleton from "../Components/MaterialBoxSkeleton";
-import { FaArrowUp } from "react-icons/fa";
+
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 import MainContainer from "../components/MainContainer";
+import MaterialBoxSkeleton from "../components/MaterialBoxSkeleton";
+
+import ph from "/src/img/inmatph.png";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { FaArrowUp } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
 
 const MateriSementara = () => {
   const [diskusi, setDiskusi] = useState(false);
   const [post, setPost] = useState({});
+  const [comments, setComments] = useState([]);
   const { postId } = useParams();
 
   const handleDiskusi = () => {
@@ -22,6 +27,9 @@ const MateriSementara = () => {
     axiosClient.get(`/api/materials/${postId}`).then((mat) => {
       document.title = `${mat.data.data.title} - DuLearn`;
       setPost(mat.data.data);
+    });
+    axiosClient.get(`/api/posts?matid=${postId}`).then((post) => {
+      setComments(post.data.data);
     });
   }, []);
 
@@ -61,8 +69,27 @@ const MateriSementara = () => {
               } transition-all duration-700 ease-in-out`}
             />
           </div>
-          <div className="bg-[#2b317c] w-[calc(100vw-25rem)] h-full rounded-r-xl py-5 px-10 overflow-y-auto grid md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-2">
-            <MaterialBoxSkeleton amount={10} />
+          <div className="bg-[#2b317c] w-[calc(100vw-25rem)] h-full rounded-r-xl py-5 px-10 overflow-y-auto grid grid-cols-1 content-start gap-2">
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="grid grid-flow-row border-base border-4 rounded-xl p-5"
+                  key={comment.id}
+                >
+                  <span className="text-xl text-white font-bold">
+                    {comment.title}
+                  </span>
+                  <span className="text-white text-setMaterials">
+                    {comment.body}
+                  </span>
+                </motion.div>
+              ))
+            ) : (
+              <MaterialBoxSkeleton amount={10} />
+            )}
           </div>
         </motion.div>
         <div className="h-full px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
@@ -76,7 +103,9 @@ const MateriSementara = () => {
                   {post.subject.subject}
                 </span>
               </div>
-              <p className="text-lg text-white">{post.material}</p>
+              <ReactMarkdown className="text-white">
+                {post.material}
+              </ReactMarkdown>
             </motion.div>
           ) : (
             <motion.img
