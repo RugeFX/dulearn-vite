@@ -7,11 +7,13 @@ const ProtectedRoute = ({ children, accessBy }) => {
 
   if (accessBy === "guest") {
     if (!user) {
+      // console.log("guest");
       return children;
     }
     return <Navigate to="/home"></Navigate>;
   } else if (accessBy === "authenticated") {
     if (user) {
+      // console.log("authenticated");
       return children;
     }
     return <Navigate to="/login"></Navigate>;

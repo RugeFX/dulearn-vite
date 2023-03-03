@@ -8,7 +8,6 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     let userProfle = localStorage.getItem("userProfile");
     if (!userProfle) {
-      axiosClient.get("/api/auth/web/logout");
       return null;
     }
     return JSON.parse(userProfle);
@@ -20,7 +19,7 @@ export const AuthContextProvider = ({ children }) => {
     await axiosClient.get(`/sanctum/csrf-cookie`);
     const res = await axiosClient.post("/api/auth/web/login", payload);
     if (res.data.success === "Success") {
-      let apiResponse = await axiosClient.get("/api/auth/user");
+      let apiResponse = await axiosClient.get("/api/me");
       localStorage.setItem("userProfile", JSON.stringify(apiResponse.data));
       setUser(apiResponse.data);
       navigate("/home");

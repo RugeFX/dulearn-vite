@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FaAngleRight,
+  FaBookmark,
   FaComment,
   FaRegBookmark,
   FaSearch,
@@ -11,23 +12,56 @@ import axiosClient from "../apiClient";
 import MainContainer from "../components/MainContainer";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import AuthContext from "../contexts/AuthContext";
 import ph from "/src/img/rightsideph.png";
-import phmat from "/src/img/materialsbgph.png";
 
 const Materials = () => {
   const [search, setSearch] = useState("");
   const [searchFocus, setSearchFocus] = useState(false);
   const [subject, setSubject] = useState(0);
   const [materials, setMaterials] = useState([]);
+  const { user } = useContext(AuthContext);
+
+  const [koleksiId, setKoleksiId] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    // console.log(user);
     axiosClient.get("/api/materials").then((res) => {
-      console.log(res);
+      // console.log(res);
       setMaterials(res.data.data);
     });
+    axiosClient.get("/api/me").then((res) => {
+      const koleksiIds =
+        res.data.koleksi.length > 0
+          ? res.data.koleksi.map((kol) => kol.material_id)
+          : null;
+      setKoleksiId(koleksiIds);
+    });
   }, []);
+
+  const handleAddBookmark = (id) => {
+    axiosClient
+      .post(`/api/me/koleksi/${id}`)
+      .then((res) => {
+        setKoleksiId([...koleksiId, +res.data.data.material_id]);
+        console.log("Added Bookmark");
+      })
+      .catch((err) => console.error(err.response.data));
+    // console.log("Bookmark Removed!");
+  };
+
+  const handleRemoveBookmark = (id) => {
+    axiosClient
+      .delete(`/api/me/koleksi/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        setKoleksiId(koleksiId.filter((kol) => kol !== id));
+      })
+      .catch((err) => console.error(err.response.data));
+    // console.log("Bookmark Removed!");
+  };
 
   return (
     <>
@@ -79,6 +113,7 @@ const Materials = () => {
                     viewport={{ once: true }}
                     whileHover={{ x: 5 }}
                     className={`w-full flex flex-col justify-between h-80 bg-blue-primary rounded-xl bg-[url("/src/img/materialsbgcircles.png")] bg-center bg-cover px-10 py-6 hover:brightness-110`}
+                    key={mat.id}
                   >
                     <h2 className="font-bold text-white text-3xl">
                       {mat.title}
@@ -86,12 +121,21 @@ const Materials = () => {
                     <p className="text-white text-left">{mat.material}</p>
                     <div className="grid grid-flow-col w-full">
                       <div className="flex w-full justify-start gap-3">
-                        <button
-                          onClick={() => console.log("Pressed Bookmark")}
-                          className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
-                        >
-                          <FaRegBookmark />
-                        </button>
+                        {koleksiId !== null && koleksiId.includes(mat.id) ? (
+                          <button
+                            onClick={() => handleRemoveBookmark(mat.id)}
+                            className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
+                          >
+                            <FaBookmark color="orange" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleAddBookmark(mat.id)}
+                            className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
+                          >
+                            <FaRegBookmark />
+                          </button>
+                        )}
                         <button className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3">
                           <FaComment /> Diskusi
                         </button>

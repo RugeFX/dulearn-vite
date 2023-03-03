@@ -64,9 +64,7 @@ export default function Login() {
                   error.reg_num != null || error.all != null
                     ? "text-red-600"
                     : "text-white"
-                } outline-none  ${
-                  !focusNisn && "pb-3.5 pt-3.5"
-                } transition-all`}
+                } outline-none ${!focusNisn && "pb-3.5 pt-4"} transition-all`}
                 onFocus={(e) => {
                   setFocusNisn(true);
                   e.target.parentElement.style.scale = "105%";
@@ -89,7 +87,7 @@ export default function Login() {
                   nisn && !focusNisn ? "opacity-0" : "opacity-50"
                 } ${
                   focusNisn &&
-                  "-translate-y-4 translate-x-14 scale-75 opacity-100"
+                  "-translate-y-4 translate-x-[3.5rem] scale-75 opacity-100"
                 } transition-all`}
               >
                 NISN
@@ -105,7 +103,7 @@ export default function Login() {
                   error.password != null || error.all != null
                     ? "text-red-600"
                     : "text-white"
-                } ${!focusPass && "pb-3.5 pt-3.5"} transition-all`}
+                } ${!focusPass && "pb-3.5 pt-4"} transition-all`}
                 onFocus={(e) => {
                   setFocusPass(true);
                   e.target.parentElement.style.scale = "105%";

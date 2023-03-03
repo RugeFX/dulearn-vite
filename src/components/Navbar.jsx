@@ -30,7 +30,7 @@ const Navbar = () => {
   useOutsideAlerter(wrapperRef, setToggleUser);
 
   return (
-    <nav className="bg-[#161719] w-screen fixed top-0 p-3 h-20 grid grid-cols-2 z-20">
+    <nav className="bg-[#161719] w-screen fixed top-0 p-3 px-5 h-20 grid grid-cols-2 z-20 box-border">
       <div
         ref={wrapperRef}
         className={`z-10 absolute flex flex-col w-52 h-28 top-20 right-10 bg-white rounded-lg shadow-md divide-y-2 ${
@@ -61,7 +61,7 @@ const Navbar = () => {
           Log Out
         </button>
       </div>
-      <div className="flex items-center h-full justify-start px-2">
+      <div className="flex items-center h-full justify-start">
         <img
           className="cursor-pointer"
           src={logo}
@@ -70,7 +70,7 @@ const Navbar = () => {
           }}
         ></img>
       </div>
-      <div className="flex items-center gap-5 h-full justify-end px-10">
+      <div className="flex items-center gap-5 h-full justify-end">
         <img
           className="w-10 rounded-full border-white border-2 cursor-pointer"
           src={defpp}
