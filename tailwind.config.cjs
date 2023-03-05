@@ -11,6 +11,7 @@ module.exports = {
         base: "#070B30",
         "yellow-primary": "#FAA41A",
         "blue-primary": "#464A83",
+        "blue-secondary": "#686DC0",
       },
       backgroundColor: {
         base: "#070B30",
@@ -19,5 +20,5 @@ module.exports = {
       textColor: {},
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import axiosClient from "../apiClient";
 
 import Navbar from "../components/Navbar";
@@ -14,7 +14,11 @@ import { FaArrowUp } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 
 const MateriSementara = () => {
-  const [diskusi, setDiskusi] = useState(false);
+  const location = useLocation();
+  const isDiscussionOpen = location.state?.isDiscussionOpen;
+
+  const [diskusi, setDiskusi] = useState(isDiscussionOpen);
+
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const { postId } = useParams();
@@ -28,9 +32,12 @@ const MateriSementara = () => {
       document.title = `${mat.data.data.title} - DuLearn`;
       setPost(mat.data.data);
     });
-    axiosClient.get(`/api/posts?matid=${postId}`).then((post) => {
-      setComments(post.data.data);
-    });
+    axiosClient
+      .get(`/api/posts?matid=${postId}`)
+      .then((post) => {
+        setComments(post.data.data);
+      })
+      .catch(() => setComments([]));
   }, []);
 
   return (
@@ -44,12 +51,12 @@ const MateriSementara = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
-            className="absolute w-full h-full bg-black"
+            className="fixed inset-0 bg-black"
           ></motion.div>
         )}
       </AnimatePresence>
 
-      <MainContainer>
+      <MainContainer className={diskusi ? "overflow-y-hidden" : ""}>
         <motion.div
           className={`fixed h-4/5 z-50 left-72 ${
             diskusi ? "bottom-16" : "-bottom-[71.8vh]"
@@ -76,7 +83,7 @@ const MateriSementara = () => {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
-                  className="grid grid-flow-row border-base border-4 rounded-xl p-5"
+                  className="grid grid-flow-row bg-gradient-to-br from-blue-secondary to-[#3D406E] rounded-xl p-5"
                   key={comment.id}
                 >
                   <span className="text-xl text-white font-bold">
@@ -92,7 +99,9 @@ const MateriSementara = () => {
             )}
           </div>
         </motion.div>
-        <div className="h-full px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
+        <div
+          className={`min-h-screen px-7 py-10 pb-24 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]`}
+        >
           {Object.keys(post).length > 0 ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="mb-3">
@@ -103,7 +112,7 @@ const MateriSementara = () => {
                   {post.subject.subject}
                 </span>
               </div>
-              <ReactMarkdown className="text-white">
+              <ReactMarkdown className="text-white prose">
                 {post.material}
               </ReactMarkdown>
             </motion.div>

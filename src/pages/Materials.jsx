@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import {
   FaAngleRight,
@@ -15,52 +15,83 @@ import Sidebar from "../components/Sidebar";
 import AuthContext from "../contexts/AuthContext";
 import ph from "/src/img/rightsideph.png";
 
+import ReactMarkdown from "react-markdown";
+
 const Materials = () => {
   const [search, setSearch] = useState("");
-  const [searchFocus, setSearchFocus] = useState(false);
   const [subject, setSubject] = useState(0);
-  const [materials, setMaterials] = useState([]);
-  const { user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(1);
 
-  const [koleksiId, setKoleksiId] = useState(null);
+  const [searchFocus, setSearchFocus] = useState(false);
+  const [materials, setMaterials] = useState([]);
+  const [searchMaterials, setSearchMaterials] = useState([]);
+  const [koleksiId, setKoleksiId] = useState([]);
+
+  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // console.log(user);
+  const fetchAllDatas = () => {
     axiosClient.get("/api/materials").then((res) => {
       // console.log(res);
       setMaterials(res.data.data);
     });
+  };
+
+  useEffect(() => {
+    // console.log(user);
+    setIsLoading(1);
+    fetchAllDatas();
     axiosClient.get("/api/me").then((res) => {
       const koleksiIds =
         res.data.koleksi.length > 0
           ? res.data.koleksi.map((kol) => kol.material_id)
           : null;
       setKoleksiId(koleksiIds);
+      setIsLoading(0);
     });
   }, []);
 
   const handleAddBookmark = (id) => {
+    setKoleksiId((prevIds) => {
+      return prevIds ? [...prevIds, +id] : [+id];
+    });
     axiosClient
       .post(`/api/me/koleksi/${id}`)
       .then((res) => {
-        setKoleksiId([...koleksiId, +res.data.data.material_id]);
         console.log("Added Bookmark");
+      })
+      .catch((err) => console.error(err.response));
+    // console.log("Bookmark Removed!");
+  };
+
+  const handleRemoveBookmark = (id) => {
+    setKoleksiId(koleksiId.filter((kol) => kol !== id));
+    axiosClient
+      .delete(`/api/me/koleksi/${id}`)
+      .then((res) => {
+        console.log(res.data);
       })
       .catch((err) => console.error(err.response.data));
     // console.log("Bookmark Removed!");
   };
 
-  const handleRemoveBookmark = (id) => {
-    axiosClient
-      .delete(`/api/me/koleksi/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setKoleksiId(koleksiId.filter((kol) => kol !== id));
-      })
-      .catch((err) => console.error(err.response.data));
-    // console.log("Bookmark Removed!");
+  const handleSearch = () => {
+    setIsLoading(1);
+    if (search === "") {
+      fetchAllDatas();
+      setIsLoading(0);
+      return;
+    }
+    //TODO Search materials
+    fetchSearchDatas(search).then((res) => {
+      if (res.data.data === null) {
+        setIsLoading(2);
+        return;
+      }
+      setSearchMaterials(res.data.data);
+    });
+    return;
   };
 
   return (
@@ -97,8 +128,13 @@ const Materials = () => {
                   onChange={(e) => setSearch(e.target.value)}
                   onFocus={() => setSearchFocus(true)}
                   onBlur={() => setSearchFocus(false)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
                 />
-                <button>
+                <button onClick={handleSearch}>
                   <FaSearch color="white" className="m-4" />
                 </button>
               </div>
@@ -118,26 +154,82 @@ const Materials = () => {
                     <h2 className="font-bold text-white text-3xl">
                       {mat.title}
                     </h2>
-                    <p className="text-white text-left">{mat.material}</p>
+                    <p className="text-white text-left w-72 h-full truncate">
+                      <ReactMarkdown>{mat.material}</ReactMarkdown>
+                    </p>
                     <div className="grid grid-flow-col w-full">
                       <div className="flex w-full justify-start gap-3">
-                        {koleksiId !== null && koleksiId.includes(mat.id) ? (
-                          <button
-                            onClick={() => handleRemoveBookmark(mat.id)}
-                            className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
-                          >
-                            <FaBookmark color="orange" />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleAddBookmark(mat.id)}
-                            className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all"
-                          >
-                            <FaRegBookmark />
-                          </button>
-                        )}
-                        <button className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3">
-                          <FaComment /> Diskusi
+                        <button
+                          onClick={
+                            koleksiId !== null && koleksiId.includes(mat.id)
+                              ? () => handleRemoveBookmark(mat.id)
+                              : () => handleAddBookmark(mat.id)
+                          }
+                          className="px-4 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all relative"
+                        >
+                          <AnimatePresence>
+                            {koleksiId !== null &&
+                            koleksiId.includes(mat.id) ? (
+                              <motion.div
+                                key="bookmark-on"
+                                initial={{
+                                  scale: 0,
+                                  position: "absolute",
+                                  zIndex: 1,
+                                }}
+                                animate={{
+                                  scale: 1,
+                                  position: "relative",
+                                  zIndex: 1,
+                                }}
+                                exit={{
+                                  scale: 0,
+                                  opacity: 0,
+                                  position: "absolute",
+                                  zIndex: 0,
+                                }}
+                                className="top-0 left-0 right-0 bottom-0 m-auto flex items-center justify-center"
+                              >
+                                <FaBookmark color="orange" />
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                key="bookmark-off"
+                                initial={{
+                                  scale: 0,
+                                  position: "absolute",
+                                  zIndex: 1,
+                                }}
+                                animate={{
+                                  scale: 1,
+                                  position: "relative",
+                                  zIndex: 1,
+                                }}
+                                exit={{
+                                  scale: 0,
+                                  opacity: 0,
+                                  position: "absolute",
+                                  zIndex: 0,
+                                }}
+                                className="top-0 left-0 right-0 bottom-0 m-auto flex items-center justify-center"
+                              >
+                                <FaRegBookmark />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </button>
+                        <button
+                          className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3"
+                          onClick={() =>
+                            navigate(`/material/${mat.id}`, {
+                              state: { isDiscussionOpen: true },
+                            })
+                          }
+                        >
+                          <FaComment />
+                          <span className="hidden lg:inline-block">
+                            Diskusi
+                          </span>
                         </button>
                       </div>
                       <div className="flex w-full justify-end gap-3">
@@ -145,33 +237,44 @@ const Materials = () => {
                           onClick={() => navigate(`/material/${mat.id}`)}
                           className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3"
                         >
-                          Read More
+                          <span className="hidden md:inline-block">
+                            Read More
+                          </span>
                           <FaAngleRight />
                         </button>
                       </div>
                     </div>
                   </motion.div>
                 ))
-              ) : (
+              ) : isLoading === 1 ? (
                 <>
-                  <motion.div
+                  <motion.img
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className={`w-full flex flex-col justify-between pointer-events-none h-80 bg-blue-primary rounded-xl bg-[url("/src/img/materialsbgph.png")] bg-center bg-cover px-10 py-6 animate-pulse`}
-                  ></motion.div>
+                    src="/src/img/materialsbgph.png"
+                    className={`w-full flex flex-col justify-between pointer-events-none h-80 bg-blue-primary rounded-xl object-fill animate-pulse`}
+                  ></motion.img>
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className={`w-full flex flex-col justify-between pointer-events-none h-80 bg-blue-primary rounded-xl bg-[url("/src/img/materialsbgph.png")] bg-center bg-cover px-10 py-6 animate-pulse`}
                   ></motion.div>
                 </>
+              ) : isLoading === 2 ? (
+                <div className="w-full">
+                  <h2 className="text-white font-bold text-2xl">
+                    Materi tidak ditemukan!
+                  </h2>
+                </div>
+              ) : (
+                <div></div>
               )}
             </div>
           </div>
           <motion.aside
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="w-72 h-full p-5 bg-blue-primary rounded-xl grid grid-flow-row gap-5"
+            className="w-72 h-full p-5 bg-blue-primary rounded-xl grid-flow-row gap-5 hidden lg:grid"
           >
             <img src={ph} alt="Placeholder" className="object-contain w-full" />
             <img src={ph} alt="Placeholder" className="object-contain w-full" />

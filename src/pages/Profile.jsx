@@ -12,7 +12,7 @@ const Profile = () => {
       <Navbar />
       <Sidebar chosenTab={4} />
       <MainContainer>
-        <div className="h-full px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
+        <div className="min-h-screen px-7 py-10 rounded-lg bg-gradient-to-b from-[#42489E] to-[#161A58]">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="mb-3">
               <span className="text-3xl text-white font-bold">
@@ -25,7 +25,6 @@ const Profile = () => {
             <p className="text-lg text-white">{user.reg_num}</p>
           </motion.div>
         </div>
-        <h1 className="text-white">{JSON.stringify(user.reg_num)}</h1>
       </MainContainer>
     </>
   );

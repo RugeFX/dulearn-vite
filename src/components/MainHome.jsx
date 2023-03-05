@@ -94,7 +94,7 @@ const MainHome = (props) => {
           </motion.button>
         </div>
         {materials.length > 0 ? (
-          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-x-scroll overflow-y-hidden">
             {materials.map((mat) => (
               <MaterialBox
                 key={mat.id}

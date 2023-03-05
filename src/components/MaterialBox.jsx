@@ -25,7 +25,7 @@ const MaterialBox = ({ title, subject, onClick, children }) => {
         backgroundPosition: "center",
         backgroundSize: "cover",
       }}
-      className={`p-5 h-[206px] w-[449px] cursor-pointer hover:brightness-125`}
+      className={`p-5 box-border h-[206px] w-[449px] cursor-pointer hover:brightness-125 text-ellipsis overflow-y-clip`}
     >
       <span className="text-white text-xl font-bold">{title}</span>
       <span className="pl-3 text-[#FAA41A] text-sm">{subject}</span>
