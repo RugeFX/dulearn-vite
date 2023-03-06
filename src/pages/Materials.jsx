@@ -32,15 +32,18 @@ const Materials = () => {
   const navigate = useNavigate();
 
   const fetchAllDatas = () => {
-    axiosClient.get("/api/materials").then((res) => {
-      // console.log(res);
-      setMaterials(res.data.data);
-    });
+    axiosClient
+      .get("/api/materials")
+      .then((res) => {
+        // console.log(res);
+        setIsLoading(1);
+        setMaterials(res.data.data);
+      })
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
     // console.log(user);
-    setIsLoading(1);
     fetchAllDatas();
     axiosClient.get("/api/me").then((res) => {
       const koleksiIds =
@@ -51,6 +54,22 @@ const Materials = () => {
       setIsLoading(0);
     });
   }, []);
+
+  const fetchDataWithQuery = () => {
+    setIsLoading(1);
+    axiosClient
+      .get(`/api/materials?search=${search}&filter=${subject}`)
+      .then((res) => {
+        console.log(res);
+        setMaterials(res.data.data);
+        setIsLoading(0);
+      })
+      .catch((err) => {
+        setMaterials([]);
+        setIsLoading(2);
+        console.error(err);
+      });
+  };
 
   const handleAddBookmark = (id) => {
     setKoleksiId((prevIds) => {
@@ -80,18 +99,10 @@ const Materials = () => {
     setIsLoading(1);
     if (search === "") {
       fetchAllDatas();
-      setIsLoading(0);
       return;
     }
     //TODO Search materials
-    fetchSearchDatas(search).then((res) => {
-      if (res.data.data === null) {
-        setIsLoading(2);
-        return;
-      }
-      setSearchMaterials(res.data.data);
-    });
-    return;
+    fetchDataWithQuery();
   };
 
   return (

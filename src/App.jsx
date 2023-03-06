@@ -14,6 +14,7 @@ import Koleksi from "./pages/Koleksi";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import MyMaterials from "./pages/MyMaterials";
 
 export default function App() {
   return (
@@ -81,7 +82,7 @@ export default function App() {
           <Route
             path="/editor"
             element={
-              <ProtectedRoute accessBy="authenticated">
+              <ProtectedRoute accessBy="editor">
                 <Editor />
               </ProtectedRoute>
             }
@@ -91,6 +92,14 @@ export default function App() {
             element={
               <ProtectedRoute accessBy="authenticated">
                 <Koleksi />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-materials"
+            element={
+              <ProtectedRoute accessBy="editor">
+                <MyMaterials />
               </ProtectedRoute>
             }
           />

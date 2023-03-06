@@ -17,6 +17,12 @@ const ProtectedRoute = ({ children, accessBy }) => {
       return children;
     }
     return <Navigate to="/login"></Navigate>;
+  } else if (accessBy === "editor") {
+    if (user.level_id === 2) {
+      // console.log("authenticated");
+      return children;
+    }
+    return <Navigate to="/home"></Navigate>;
   }
 };
 export default ProtectedRoute;
