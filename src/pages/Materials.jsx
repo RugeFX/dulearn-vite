@@ -19,6 +19,7 @@ import ReactMarkdown from "react-markdown";
 
 const Materials = () => {
   const [search, setSearch] = useState("");
+  const [subjectsData, setSubjectsData] = useState([]);
   const [subject, setSubject] = useState(0);
   const [isLoading, setIsLoading] = useState(1);
 
@@ -30,6 +31,18 @@ const Materials = () => {
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
+  const searchHome = location.state?.home;
+
+  const fillSubjectDropwdown = () => {
+    axiosClient
+      .get("/api/subjects")
+      .then((res) => {
+        console.log(res);
+        setIsLoading(1);
+        setSubjectsData(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  };
 
   const fetchAllDatas = () => {
     axiosClient
@@ -44,15 +57,22 @@ const Materials = () => {
 
   useEffect(() => {
     // console.log(user);
-    fetchAllDatas();
-    axiosClient.get("/api/me").then((res) => {
-      const koleksiIds =
-        res.data.koleksi.length > 0
-          ? res.data.koleksi.map((kol) => kol.material_id)
-          : null;
-      setKoleksiId(koleksiIds);
-      setIsLoading(0);
-    });
+    if (searchHome) {
+      setSearch(searchHome);
+      fillSubjectDropwdown();
+      fetchDataWithQuery();
+    } else {
+      fetchAllDatas();
+      fillSubjectDropwdown();
+      axiosClient.get("/api/me").then((res) => {
+        const koleksiIds =
+          res.data.koleksi.length > 0
+            ? res.data.koleksi.map((kol) => kol.material_id)
+            : null;
+        setKoleksiId(koleksiIds);
+        setIsLoading(0);
+      });
+    }
   }, []);
 
   const fetchDataWithQuery = () => {
@@ -122,7 +142,9 @@ const Materials = () => {
                   onChange={(e) => setSubject(e.target.value)}
                 >
                   <option value="0">All</option>
-                  <option value="1">DDG</option>
+                  {subjectsData.map((sub) => (
+                    <option value={sub.id}>{sub.subject}</option>
+                  ))}
                 </select>
               </div>
               <div
@@ -136,6 +158,7 @@ const Materials = () => {
                   name="search"
                   id="search"
                   className={`w-full text-base h-full px-3 py-2 rounded-l-lg outline-none transition-all`}
+                  value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onFocus={() => setSearchFocus(true)}
                   onBlur={() => setSearchFocus(false)}
@@ -164,6 +187,9 @@ const Materials = () => {
                   >
                     <h2 className="font-bold text-white text-3xl">
                       {mat.title}
+                      <span className="pl-3 text-yellow-primary text-sm font-thin">
+                        {mat.subject.subject}
+                      </span>
                     </h2>
                     <p className="text-white text-left w-72 h-full truncate">
                       <ReactMarkdown>{mat.material}</ReactMarkdown>

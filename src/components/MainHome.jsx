@@ -11,7 +11,12 @@ const { useEffect, useState } = React;
 
 const MainHome = (props) => {
   const [materials, setMaterials] = useState([]);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/materials", { search });
+  };
 
   useEffect(() => {
     axiosClient
@@ -40,8 +45,14 @@ const MainHome = (props) => {
                 <input
                   className="w-full rounded-lg p-3 outline-none transition-all focus:shadow-[#FAA41A] focus:shadow-input"
                   type="text"
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
                 ></input>
-                <button className="px-5 bg-[#FAA41A] rounded-lg transition-all hover:bg-[#bd8120]">
+                <button
+                  className="px-5 bg-[#FAA41A] rounded-lg transition-all hover:bg-[#bd8120]"
+                  onClick={handleClick}
+                >
                   <FaSearch color="white" />
                 </button>
               </div>
@@ -113,14 +124,56 @@ const MainHome = (props) => {
             <MaterialBoxSkeleton pulse={true} amount={10} />
           </div>
         )}
-        <h1 className="text-3xl text-white font-bold">Materi A</h1>
+        <h1 className="text-3xl text-white font-bold pt-3">Materi DDG</h1>
+        {materials.length > 0 ? (
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-x-scroll overflow-y-hidden">
+            {materials
+              .filter((v) => v.subject.subject === "DDG")
+              .map((mat) => (
+                <MaterialBox
+                  key={mat.id}
+                  title={mat.title}
+                  subject={mat.subject.subject}
+                  onClick={() => {
+                    navigate(`/material/${mat.id}`);
+                  }}
+                >
+                  {mat.material}
+                </MaterialBox>
+              ))}
+          </div>
+        ) : (
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-hidden">
+            <MaterialBoxSkeleton pulse={true} amount={10} />
+          </div>
+        )}
+        {/* <h1 className="text-3xl text-white font-bold">Materi DDG</h1>
         <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
           <MaterialBoxSkeleton amount={10} />
-        </div>
-        <h1 className="text-3xl text-white font-bold">Materi B</h1>
-        <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-auto">
-          <MaterialBoxSkeleton amount={10} />
-        </div>
+        </div> */}
+        <h1 className="text-3xl text-white font-bold pt-3">Materi PROGDAS</h1>
+        {materials.length > 0 ? (
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-x-scroll overflow-y-hidden">
+            {materials
+              .filter((v) => v.subject.subject === "PROGDAS")
+              .map((mat) => (
+                <MaterialBox
+                  key={mat.id}
+                  title={mat.title}
+                  subject={mat.subject.subject}
+                  onClick={() => {
+                    navigate(`/material/${mat.id}`);
+                  }}
+                >
+                  {mat.material}
+                </MaterialBox>
+              ))}
+          </div>
+        ) : (
+          <div className="py-5 grid grid-flow-col justify-start w-full gap-5 overflow-hidden">
+            <MaterialBoxSkeleton pulse={true} amount={10} />
+          </div>
+        )}
       </div>
     </main>
   );

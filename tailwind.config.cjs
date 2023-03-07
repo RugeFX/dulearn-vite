@@ -12,6 +12,7 @@ module.exports = {
         "yellow-primary": "#FAA41A",
         "blue-primary": "#464A83",
         "blue-secondary": "#686DC0",
+        "translucent-black": "rgba(8, 8, 8, 0.5)",
       },
       backgroundColor: {
         base: "#070B30",

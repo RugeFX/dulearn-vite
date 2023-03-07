@@ -31,7 +31,7 @@ export default function Login() {
       setLoading(false);
       const errResponse = err.response.data;
       setError(errResponse.data);
-      console.error(error);
+      console.error(err);
     }
   };
 

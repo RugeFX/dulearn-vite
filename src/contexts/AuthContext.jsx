@@ -16,8 +16,10 @@ export const AuthContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (payload) => {
-    await axiosClient.get(`/sanctum/csrf-cookie`);
+    const csrfCookie = await axiosClient.get(`/sanctum/csrf-cookie`);
+    console.log(csrfCookie);
     const res = await axiosClient.post("/api/auth/web/login", payload);
+    console.log(res.data);
     if (res.data.success === "Success") {
       let apiResponse = await axiosClient.get("/api/me");
       localStorage.setItem("userProfile", JSON.stringify(apiResponse.data));
