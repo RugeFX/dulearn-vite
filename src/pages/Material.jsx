@@ -77,7 +77,7 @@ const RepliesMap = ({ postId }) => {
       className={`bg-[#32336b] w-full mt-2 rounded-lg text-white h-full overflow-hidden grid grid-flow-row divide-y-2`}
     >
       <button
-        className="py-2 text-white text-md font-bold cursor-pointer bg-gradient-to-tr from-blue-primary to-[#3D406E]"
+        className="py-2 text-white text-md font-bold cursor-pointer bg-gradient-to-tr from-blue-primary to-[#3D406E] hover:from-[#3D406E]"
         onClick={() => setCommentInputOpen(!commentInputOpen)}
       >
         Tambah reply
@@ -115,7 +115,10 @@ const RepliesMap = ({ postId }) => {
         replies.map((rep) => (
           <div key={rep.id} className="p-3 flex flex-col">
             <span className="text-sm font-bold bg-blue-secondary w-fit px-2 py-1 rounded-xl">
-              {rep.user.registered_user.name}
+              {rep.user.registered_user.name} -{" "}
+              <span className=" text-yellow-primary">
+                {rep.user.registered_user.kelas.class}
+              </span>
             </span>
             <p className="pl-2">{rep.reply}</p>
           </div>
@@ -309,7 +312,10 @@ const MateriSementara = () => {
                   key={comment.id}
                 >
                   <span className="text-white text-sm px-2 py-1 rounded-lg bg-[#32336b] w-fit mb-2">
-                    {comment.user.registered_user.name}
+                    {comment.user.registered_user.name} -{" "}
+                    <span className=" text-yellow-primary">
+                      {comment.user.registered_user.kelas.class}
+                    </span>
                   </span>
                   <span className="text-xl text-yellow-primary font-bold">
                     {comment.title}
