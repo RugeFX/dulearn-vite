@@ -66,7 +66,8 @@ const MyMaterials = () => {
 
   const navigate = useNavigate();
 
-  const handleDeleteMaterial = (matid) => {
+  const handleDeleteMaterial = (id, judul) => {
+    setSelectedItem({ id, judul });
     setConfirmPopup(true);
   };
 
@@ -159,10 +160,7 @@ const MyMaterials = () => {
                 <div className="flex w-full flex-1 items-end justify-between gap-3">
                   <div className="flex w-full justify-start gap-3">
                     <button
-                      onClick={() => {
-                        setSelectedItem({ id: mat.id, judul: mat.title });
-                        setConfirmPopup(true);
-                      }}
+                      onClick={() => handleDeleteMaterial(mat.id, mat.title)}
                       className="px-4 bg-red-600 opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all relative"
                     >
                       <AnimatePresence>
@@ -214,7 +212,7 @@ const MyMaterials = () => {
             materials.length === 0 && (
               <div className="col-span-3 justify-self-center">
                 <h1 className="text-white text-2xl font-bold">
-                  Anda belum memiliki koleksi!
+                  Anda belum memiliki materi!
                 </h1>
               </div>
             )

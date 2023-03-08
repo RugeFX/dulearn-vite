@@ -6,27 +6,23 @@ import MainContainer from "../components/MainContainer";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-const subjectOptions = [
-  {
-    value: 1,
-    label: "DDG",
-  },
-  {
-    value: 2,
-    label: "SIMDIG",
-  },
-  {
-    value: 3,
-    label: "SISKOM",
-  },
-];
-
 export default function Editor() {
   const { user } = useContext(AuthContext);
 
   const [subject, setSubject] = useState("1");
   const [title, setTitle] = useState("");
   const [material, setMaterial] = useState("**Hello world!!!**");
+  const [subjects, setSubjects] = useState([]);
+
+  const fillSubjectDropwdown = () => {
+    axiosClient
+      .get("/api/subjects")
+      .then((res) => {
+        console.log(res);
+        setSubjects(res.data.data);
+      })
+      .catch((err) => console.error(err));
+  };
 
   const handleAdd = () => {
     axiosClient
@@ -41,6 +37,10 @@ export default function Editor() {
         console.log(res.data);
       });
   };
+
+  useEffect(() => {
+    fillSubjectDropwdown();
+  }, []);
 
   return (
     <>
@@ -59,9 +59,9 @@ export default function Editor() {
             id="subbjectSelect"
             onChange={(e) => setSubject(e.target.value)}
           >
-            {subjectOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
+            {subjects.map((opt) => (
+              <option key={opt.id} value={opt.id}>
+                {opt.subject}
               </option>
             ))}
           </select>
