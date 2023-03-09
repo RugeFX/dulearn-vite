@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axiosClient from "../apiClient";
 
@@ -110,10 +110,23 @@ const RepliesMap = ({ postId }) => {
         </div>
       </div>
       {loading ? (
-        <div className="w-full p-3 flex justify-center">Loading</div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="animate-pulse grid place-items-center"
+        >
+          <div className="m-2 w-4/5 h-fullrounded-lg bg-blue-secondary grid place-items-center rounded-lg">
+            <span className="text-white p-2">Loading</span>
+          </div>
+        </motion.div>
       ) : replies.length > 0 ? (
         replies.map((rep) => (
-          <div key={rep.id} className="p-3 flex flex-col">
+          <motion.div
+            key={rep.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="p-3 flex flex-col"
+          >
             <span className="text-sm font-bold bg-blue-secondary w-fit px-2 py-1 rounded-xl">
               {rep.user.registered_user.name} -{" "}
               <span className=" text-yellow-primary">
@@ -121,7 +134,7 @@ const RepliesMap = ({ postId }) => {
               </span>
             </span>
             <p className="pl-2">{rep.reply}</p>
-          </div>
+          </motion.div>
         ))
       ) : (
         <div className="w-full p-3 flex justify-center">Belum ada reply</div>
@@ -328,7 +341,7 @@ const MateriSementara = () => {
                       className="flex justify-end items-center gap-2 px-2 py-1 border-base border rounded-lg text-base text-sm hover:bg-base hover:text-yellow-primary transition-colors"
                       onClick={() => handleOpenReplies(comment.id)}
                     >
-                      <span>Show replies</span>
+                      <span>Lihat reply</span>
                       <FaArrowDown />
                     </button>
                   </div>

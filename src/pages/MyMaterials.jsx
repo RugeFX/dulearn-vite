@@ -161,7 +161,7 @@ const MyMaterials = () => {
                   <div className="flex w-full justify-start gap-3">
                     <button
                       onClick={() => handleDeleteMaterial(mat.id, mat.title)}
-                      className="px-4 bg-red-600 opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all relative"
+                      className="px-4 py-3 bg-red-600 opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all relative"
                     >
                       <AnimatePresence>
                         <motion.div
@@ -188,7 +188,7 @@ const MyMaterials = () => {
                         </motion.div>
                       </AnimatePresence>
                     </button>
-                    <button
+                    {/* <button
                       className="p-3 bg-white opacity-75 hover:opacity-100 text-base font-bold border-base border-2 rounded-xl transition-all flex items-center justify-between gap-3"
                       onClick={() =>
                         navigate(`/material/${mat.id}`, {
@@ -197,7 +197,7 @@ const MyMaterials = () => {
                       }
                     >
                       <FaPencilAlt />
-                    </button>
+                    </button> */}
                   </div>
                   <button
                     onClick={() => navigate(`/material/${mat.id}`)}
